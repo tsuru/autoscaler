@@ -22,6 +22,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.4.0
+	github.com/xanzy/go-cloudstack/v2 v2.8.0
 	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	google.golang.org/api v0.6.1-0.20190607001116-5213b8090861
@@ -454,5 +455,7 @@ replace (
 replace github.com/digitalocean/godo => github.com/digitalocean/godo v1.27.0
 
 replace github.com/rancher/go-rancher => github.com/rancher/go-rancher v0.1.0
+
+replace github.com/xanzy/go-cloudstack/v2 => github.com/xanzy/go-cloudstack/v2 v2.8.0
 
 replace k8s.io/kubernetes => /tmp/ca-update-vendor.Hz3P/kubernetes
