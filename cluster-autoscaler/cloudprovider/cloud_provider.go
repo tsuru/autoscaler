@@ -46,6 +46,8 @@ const (
 	ExoscaleProviderName = "exoscale"
 	// GceProviderName gets the provider name of gce
 	GceProviderName = "gce"
+	// GloboCloudstackProviderName gets the provider name of cloudstack
+	GloboCloudstackProviderName = "globo-cloudstack"
 	// HetznerProviderName gets the provider name of hetzner
 	HetznerProviderName = "hetzner"
 	// MagnumProviderName gets the provider name of magnum
