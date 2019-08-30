@@ -35,6 +35,8 @@ const (
 	AwsProviderName = "aws"
 	// BaiducloudProviderName gets the provider name of baiducloud
 	BaiducloudProviderName = "baiducloud"
+	// CloudstackProviderName gets the provider name of cloudstack
+	CloudstackProviderName = "cloudstack"
 	// DigitalOceanProviderName gets the provider name of digitalocean
 	DigitalOceanProviderName = "digitalocean"
 	// GceProviderName gets the provider name of gce
