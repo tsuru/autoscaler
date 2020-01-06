@@ -108,7 +108,7 @@ func (s *csScaler) scaleUp(vmp vmProfile, count int) error {
 		}
 	}
 	if len(errorMsgs) > 0 {
-		return fmt.Errorf("error creating VMs: %v", strings.Join(errorMsgs, " - "))
+		return fmt.Errorf("error creating VMs for  group %q: %v", vmp.Id(), strings.Join(errorMsgs, " - "))
 	}
 	return nil
 }
