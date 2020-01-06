@@ -24,6 +24,7 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider"
 	"k8s.io/autoscaler/cluster-autoscaler/config"
+	klog "k8s.io/klog/v2"
 	schedulerframework "k8s.io/kubernetes/pkg/scheduler/framework"
 )
 
@@ -54,7 +55,7 @@ func (g *csNodeGroup) TargetSize() (int, error) {
 	if targetSize < minSize {
 		err := g.manager.scaleUp(g, minSize-targetSize)
 		if err != nil {
-			return 0, err
+			klog.Errorf("failed to scale-up group %q to min-size: %v", g.vmProfile.Id(), err)
 		}
 		targetSize = len(g.vms)
 	}
