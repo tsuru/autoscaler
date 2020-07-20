@@ -24,6 +24,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/xanzy/go-cloudstack/v2/cloudstack"
@@ -39,6 +40,8 @@ const (
 
 	resourceTypeAutoScaleVmProfile = "AutoScaleVmProfile"
 	resourceTypeVirtualMachine     = "UserVm"
+
+	autoDiscovererTypeLabel = "label"
 
 	autoScaleProfileMetadataName             = "nodeGroupName"
 	autoScaleProfileMetadataMin              = "minNodes"
@@ -63,7 +66,7 @@ type cloudstackManager struct {
 	client      cloudstackClient
 	nodeGroups  []csNodeGroup
 	projects    *projectCache
-	labelConfig []cloudprovider.LabelAutoDiscoveryConfig
+	labelConfig []labelAutoDiscoveryConfig
 	scaler      *csScaler
 }
 
@@ -154,7 +157,7 @@ func newManager(configReader io.Reader, do cloudprovider.NodeGroupDiscoveryOptio
 		return nil, errors.New("auto discovery configuration is required")
 	}
 
-	labelConfig, err := do.ParseLabelAutoDiscoverySpecs()
+	labelConfig, err := parseLabelAutoDiscoverySpecs(do)
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +364,7 @@ func resourceDetailsToMetadata(details []*cloudstack.ResourceDetail) map[string]
 	return metadata
 }
 
-func matchesLabelConfigs(metadata map[string]string, labels []cloudprovider.LabelAutoDiscoveryConfig) bool {
+func matchesLabelConfigs(metadata map[string]string, labels []labelAutoDiscoveryConfig) bool {
 	for _, labelSet := range labels {
 		if matchesSelector(metadata, labelSet.Selector) {
 			return true
@@ -381,4 +384,48 @@ func matchesSelector(existing map[string]string, wanted map[string]string) bool 
 		}
 	}
 	return true
+}
+
+type labelAutoDiscoveryConfig struct {
+	Selector map[string]string
+}
+
+func parseLabelAutoDiscoverySpecs(o cloudprovider.NodeGroupDiscoveryOptions) ([]labelAutoDiscoveryConfig, error) {
+	cfgs := make([]labelAutoDiscoveryConfig, len(o.NodeGroupAutoDiscoverySpecs))
+	var err error
+	for i, spec := range o.NodeGroupAutoDiscoverySpecs {
+		cfgs[i], err = parseLabelAutoDiscoverySpec(spec)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return cfgs, nil
+}
+
+func parseLabelAutoDiscoverySpec(spec string) (labelAutoDiscoveryConfig, error) {
+	cfg := labelAutoDiscoveryConfig{
+		Selector: make(map[string]string),
+	}
+
+	tokens := strings.Split(spec, ":")
+	if len(tokens) != 2 {
+		return cfg, fmt.Errorf("spec \"%s\" should be discoverer:key=value,key=value", spec)
+	}
+	discoverer := tokens[0]
+	if discoverer != autoDiscovererTypeLabel {
+		return cfg, fmt.Errorf("unsupported discoverer specified: %s", discoverer)
+	}
+
+	for _, arg := range strings.Split(tokens[1], ",") {
+		kv := strings.Split(arg, "=")
+		if len(kv) != 2 {
+			return cfg, fmt.Errorf("invalid key=value pair %s", kv)
+		}
+		k, v := kv[0], kv[1]
+		if k == "" || v == "" {
+			return cfg, fmt.Errorf("empty value not allowed in key=value tag pairs")
+		}
+		cfg.Selector[k] = v
+	}
+	return cfg, nil
 }

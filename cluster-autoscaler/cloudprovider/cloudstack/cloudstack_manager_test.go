@@ -76,7 +76,7 @@ func Test_newManager(t *testing.T) {
 				APISecret: "mysecret1",
 				URL:       "u1",
 			},
-			labelConfig: []cloudprovider.LabelAutoDiscoveryConfig{
+			labelConfig: []labelAutoDiscoveryConfig{
 				{Selector: map[string]string{"a": "b"}},
 			},
 			client: cli,
@@ -100,7 +100,7 @@ func Test_newManager(t *testing.T) {
 				APISecret: "s1",
 				URL:       "u1",
 			},
-			labelConfig: []cloudprovider.LabelAutoDiscoveryConfig{
+			labelConfig: []labelAutoDiscoveryConfig{
 				{Selector: map[string]string{"a": "b"}},
 			},
 			client: cli,
@@ -132,7 +132,7 @@ func Test_newManager(t *testing.T) {
 				ExpungeVMs:             true,
 				ProjectRefreshInterval: "24h",
 			},
-			labelConfig: []cloudprovider.LabelAutoDiscoveryConfig{
+			labelConfig: []labelAutoDiscoveryConfig{
 				{Selector: map[string]string{"a": "b"}},
 			},
 			client: cli,
@@ -227,7 +227,7 @@ func Test_cloudstackManager_Refresh(t *testing.T) {
 			scaler: &csScaler{
 				client: cli,
 			},
-			labelConfig: []cloudprovider.LabelAutoDiscoveryConfig{
+			labelConfig: []labelAutoDiscoveryConfig{
 				{Selector: map[string]string{"a": "b"}},
 			},
 		}
@@ -311,7 +311,7 @@ func Test_cloudstackManager_Refresh(t *testing.T) {
 			scaler: &csScaler{
 				client: cli,
 			},
-			labelConfig: []cloudprovider.LabelAutoDiscoveryConfig{
+			labelConfig: []labelAutoDiscoveryConfig{
 				{Selector: map[string]string{"a": "b"}},
 			},
 		}
