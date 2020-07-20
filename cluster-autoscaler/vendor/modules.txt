@@ -518,6 +518,8 @@ github.com/vmware/govmomi/lookup
 github.com/vmware/govmomi/lookup/types
 github.com/vmware/govmomi/sts/internal
 github.com/vmware/govmomi/lookup/methods
+# github.com/xanzy/go-cloudstack/v2 v2.8.0 => github.com/xanzy/go-cloudstack/v2 v2.8.0
+github.com/xanzy/go-cloudstack/v2/cloudstack
 # go.opencensus.io v0.21.0 => go.opencensus.io v0.21.0
 go.opencensus.io/plugin/ochttp
 go.opencensus.io/plugin/ochttp/propagation/b3

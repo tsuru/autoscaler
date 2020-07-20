@@ -388,7 +388,7 @@ func main() {
 		lock, err := resourcelock.New(
 			leaderElection.ResourceLock,
 			*namespace,
-			"cluster-autoscaler",
+			leaderElection.ResourceName,
 			kubeClient.CoreV1(),
 			kubeClient.CoordinationV1(),
 			resourcelock.ResourceLockConfig{
